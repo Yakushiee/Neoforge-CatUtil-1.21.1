@@ -12,16 +12,15 @@ public class ServerPayloadHandler {
         if (pack.flag() == true) {
             DamageSource bidFarewell = new DamageSource(
                     context.player().level().registryAccess().
-                            registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(BID_FAREWELL),
-                    null,
-                    null,
-                    null
+                            registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(BID_FAREWELL)
             );
+
             context.player().hurt(
                     bidFarewell,
                     Float.MAX_VALUE
             );
-            //if (context.player().getHealth() > 0) context.player().setHealth(0);
+
+            //context.player().kill();
         }
     }
 }
