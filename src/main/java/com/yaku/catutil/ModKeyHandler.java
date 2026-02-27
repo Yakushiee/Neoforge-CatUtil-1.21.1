@@ -20,21 +20,8 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-@EventBusSubscriber(modid = CatUtil.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = CatUtil.MODID)
 public class ModKeyHandler {
-
-    public static KeyMapping bidFarewell;
-
-    @SubscribeEvent
-    public static void registerBindings(RegisterKeyMappingsEvent event) {
-        bidFarewell = new KeyMapping(
-                "key.catutil.bid_farewell",
-                KeyConflictContext.UNIVERSAL,
-                InputConstants.UNKNOWN,
-                "key.categories.gameplay"
-        );
-        event.register(bidFarewell);
-    }
 
     public record PlayerSuicidePacket(boolean flag) implements CustomPacketPayload {
 
@@ -56,9 +43,10 @@ public class ModKeyHandler {
 
     @SubscribeEvent
     public static void registerPayload(final RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar register =
+                event.registrar("1");
 
-        final PayloadRegistrar registrar = event.registrar("1");
-        registrar.playBidirectional(
+        register.playBidirectional(
                 PlayerSuicidePacket.TYPE,
                 PlayerSuicidePacket.STREAM_CODEC,
                 new DirectionalPayloadHandler<>(
@@ -66,15 +54,5 @@ public class ModKeyHandler {
                         ServerPayloadHandler::handleDataOnMain
                 )
         );
-    }
-
-    @SubscribeEvent
-    public static void onKeyPress(ClientTickEvent.Post event) {
-
-        Player p = Minecraft.getInstance().player;
-
-        if(bidFarewell.consumeClick()) {
-            PacketDistributor.sendToServer(new PlayerSuicidePacket(true));
-        }
     }
 }
