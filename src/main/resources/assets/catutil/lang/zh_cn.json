@@ -1,5 +1,6 @@
 {
   "key.catutil.bid_farewell": "自杀",
+  "key.catutil.explode": "自爆",
   "death.attack.bid_farewell": "☠ %1$s 再见了，残酷的世界！",
   "death.attack.bid_farewell.player": "%2$s ☠ 解决了 %1$s"
 }

@@ -14,6 +14,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class ClientKeyPressHandler {
 
     public static KeyMapping bidFarewell;
+    public static KeyMapping explode;
 
     @SubscribeEvent
     public static void registerBindings(RegisterKeyMappingsEvent event) {
@@ -24,13 +25,25 @@ public class ClientKeyPressHandler {
                 "key.categories.gameplay"
         );
         event.register(bidFarewell);
+
+        explode = new KeyMapping(
+                "key.catutil.explode",
+                KeyConflictContext.UNIVERSAL,
+                InputConstants.UNKNOWN,
+                "key.categories.gameplay"
+        );
+        event.register(explode);
     }
 
     @SubscribeEvent
     public static void onKeyPress(ClientTickEvent.Post event) {
 
         if(bidFarewell.consumeClick()) {
-            PacketDistributor.sendToServer(new ModKeyHandler.PlayerSuicidePacket(true));
+            PacketDistributor.sendToServer(new ModPayloads.PlayerSuicidePacket(false));
+        }
+
+        if(explode.consumeClick()) {
+            PacketDistributor.sendToServer(new ModPayloads.PlayerSuicidePacket(true));
         }
     }
 }
